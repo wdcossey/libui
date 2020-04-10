@@ -358,6 +358,11 @@ void uiWindowSetMargined(uiWindow *w, int margined)
 	uiprivSingleChildConstraintsSetMargined(&(w->constraints), w->margined);
 }
 
+void uiWindowSetCentered(uiWindow *w)
+{
+	[w->window center];
+}
+
 static int defaultOnClosing(uiWindow *w, void *data)
 {
 	return 0;
@@ -394,6 +399,13 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 	uiWindowOnClosing(w, defaultOnClosing, NULL);
 	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
 
+	return w;
+}
+
+uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar)
+{
+	uiWindow *w = uiNewWindow(title, width, height, hasMenubar);
+	uiWindowSetCentered(w);
 	return w;
 }
 

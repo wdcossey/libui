@@ -429,6 +429,17 @@ void uiWindowSetMargined(uiWindow *w, int margined)
 	windowRelayout(w);
 }
 
+void uiWindowSetCentered(uiWindow *w)
+{
+	RECT rc;
+	GetWindowRect(w->hwnd, &rc);
+
+	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2;
+	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2;
+
+	SetWindowPos(w->hwnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+}
+
 // see http://blogs.msdn.com/b/oldnewthing/archive/2003/09/11/54885.aspx and http://blogs.msdn.com/b/oldnewthing/archive/2003/09/13/54917.aspx
 // TODO use clientSizeToWindowSize()
 static void setClientSize(uiWindow *w, int width, int height, BOOL hasMenubar, DWORD style, DWORD exstyle)
@@ -496,6 +507,13 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
 
 	windows[w] = true;
+	return w;
+}
+
+uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar)
+{
+	uiWindow *w = uiNewWindow(title, width, height, hasMenubar);
+	uiWindowSetCentered(w);
 	return w;
 }
 
