@@ -230,6 +230,11 @@ void uiWindowSetMargined(uiWindow *w, int margined)
 	uiprivSetMargined(w->childHolderContainer, w->margined);
 }
 
+void uiWindowSetCentered(uiWindow *w)
+{
+	gtk_window_set_position(w->window, GTK_WIN_POS_CENTER);
+}
+
 uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 {
 	uiWindow *w;
@@ -276,5 +281,12 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 	// TODO we really need to clean this up, especially since see uiWindowDestroy() above
 	g_object_ref(w->widget);
 
+	return w;
+}
+
+uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar)
+{
+	uiWindow *w = uiNewWindow(title, width, height, hasMenubar);
+	uiWindowSetCentered(w);
 	return w;
 }
