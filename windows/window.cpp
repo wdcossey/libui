@@ -434,8 +434,8 @@ void uiWindowSetCentered(uiWindow *w)
 	RECT rc;
 	GetWindowRect(w->hwnd, &rc);
 
-	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2;
-	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2;
+	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right + rc.left) / 2;
+	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom + rc.top) / 2;
 
 	SetWindowPos(w->hwnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 }
