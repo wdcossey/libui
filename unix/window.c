@@ -235,6 +235,21 @@ void uiWindowSetCentered(uiWindow *w)
 	gtk_window_set_position(w->window, GTK_WIN_POS_CENTER);
 }
 
+void uiWindowSetToFront(uiWindow *w)
+{
+	gtk_window_present(w->window);
+}
+
+void uiWindowSetAlwaysVisible(uiWindow *w)
+{
+	gtk_window_set_keep_above(w->window, TRUE);
+}
+
+void uiWindowResetAlwaysVisible(uiWindow *w)
+{
+	gtk_window_set_keep_above(w->window, FALSE);
+}
+
 uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 {
 	uiWindow *w;
