@@ -140,6 +140,8 @@ _UI_EXTERN int uiWindowMargined(uiWindow *w);
 _UI_EXTERN void uiWindowSetMargined(uiWindow *w, int margined);
 _UI_EXTERN void uiWindowSetCentered(uiWindow *w);
 _UI_EXTERN void uiWindowSetToFront(uiWindow *w);
+_UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
+_UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
 

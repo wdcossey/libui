@@ -370,6 +370,16 @@ void uiWindowSetToFront(uiWindow *w)
 	[NSApp activateIgnoringOtherApps:YES];
 }
 
+void uiWindowSetAlwaysVisible(uiWindow *w)
+{
+	[w->window setLevel:NSStatusWindowLevel];
+}
+
+void uiWindowResetAlwaysVisible(uiWindow *w)
+{
+	[w->window setLevel:NSNormalWindowLevel];
+}
+
 static int defaultOnClosing(uiWindow *w, void *data)
 {
 	return 0;
