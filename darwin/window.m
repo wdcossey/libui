@@ -363,6 +363,13 @@ void uiWindowSetCentered(uiWindow *w)
 	[w->window center];
 }
 
+void uiWindowSetToFront(uiWindow *w)
+{
+	[w->window makeKeyAndOrderFront:w->window];
+	[w->window setOrderedIndex:0];
+	[NSApp activateIgnoringOtherApps:YES];
+}
+
 static int defaultOnClosing(uiWindow *w, void *data)
 {
 	return 0;
