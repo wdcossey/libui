@@ -84,6 +84,7 @@ char *uiSaveFile(uiWindow *parent)
 		modalDelegate:self
 		didEndSelector:@selector(panelEnded:result:data:)
 		contextInfo:NULL];
+	[parent makeFirstResponder:nil];
 	return [uiprivNSApp() runModalForWindow:[self->panel window]];
 }
 
