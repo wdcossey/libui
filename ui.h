@@ -142,6 +142,7 @@ _UI_EXTERN void uiWindowSetCentered(uiWindow *w);
 _UI_EXTERN void uiWindowSetToFront(uiWindow *w);
 _UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
 _UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
+_UI_EXTERN void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
 
