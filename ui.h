@@ -182,6 +182,7 @@ _UI_EXTERN void uiEntryOnChanged(uiEntry *e, void (*f)(uiEntry *e, void *data), 
 _UI_EXTERN void uiEntryOnKeyEvent(uiEntry *e, int (*f)(uiEntry *e, uiAreaKeyEvent *event));
 _UI_EXTERN int uiEntryReadOnly(uiEntry *e);
 _UI_EXTERN void uiEntrySetReadOnly(uiEntry *e, int readonly);
+_UI_EXTERN void uiEntryUnsetFocus(uiEntry *e);
 _UI_EXTERN uiEntry *uiNewEntry(void);
 _UI_EXTERN uiEntry *uiNewPasswordEntry(void);
 _UI_EXTERN uiEntry *uiNewSearchEntry(void);

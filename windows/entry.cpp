@@ -106,6 +106,10 @@ static int defaultOnKeyEvent(uiEntry *e, uiAreaKeyEvent *event)
 	return FALSE;
 }
 
+void uiEntryUnsetFocus(uiEntry *e)
+{
+	// stub to cover macos workaround
+}
 
 char *uiEntryText(uiEntry *e)
 {

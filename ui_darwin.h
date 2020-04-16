@@ -103,7 +103,7 @@ _UI_EXTERN void uiDarwinControlChildVisibilityChanged(uiDarwinControl *);
 #define uiDarwinControlDefaultSetFocus(type, handlefield) \
 	static void type ## SetFocus(uiControl *c) \
 	{ \
-		return; \
+		[type(c)->handlefield becomeFirstResponder]; \
 	}
 #define uiDarwinControlDefaultSyncEnableState(type, handlefield) \
 	static void type ## SyncEnableState(uiDarwinControl *c, int enabled) \

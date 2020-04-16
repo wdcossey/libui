@@ -43,6 +43,11 @@ static int defaultOnKeyEvent(uiEntry *e, uiAreaKeyEvent *uke)
 	return GDK_EVENT_PROPAGATE;
 }
 
+void uiEntryUnsetFocus(uiEntry *e)
+{
+	// stub to cover macos workaround
+}
+
 char *uiEntryText(uiEntry *e)
 {
 	return uiUnixStrdupText(gtk_entry_get_text(e->entry));
