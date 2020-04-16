@@ -226,6 +226,12 @@ static int defaultOnKeyEvent(uiEntry *e, uiAreaKeyEvent *ke)
 	return FALSE;
 }
 
+void uiEntryUnsetFocus(uiEntry *e)
+{
+	[e->textfield resignFirstResponder];
+	[[e->textfield window] makeFirstResponder:nil];
+}
+
 // these are based on interface builder defaults; my comments in the old code weren't very good so I don't really know what talked about what, sorry :/
 void uiprivFinishNewTextField(NSTextField *t, BOOL isEntry)
 {
