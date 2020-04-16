@@ -3,6 +3,7 @@
 
 struct uiLabel {
 	uiWindowsControl c;
+	HFONT hfont = NULL;
 	HWND hwnd;
 };
 
@@ -19,7 +20,7 @@ static void uiLabelMinimumSize(uiWindowsControl *c, int *width, int *height)
 
 	*width = uiWindowsWindowTextWidth(l->hwnd);
 	y = labelHeight;
-	uiWindowsGetSizing(l->hwnd, &sizing);
+	uiWindowsGetSizingWithFont(l->hwnd, &sizing, l->hfont);
 	uiWindowsSizingDlgUnitsToPixels(&sizing, NULL, &y);
 	*height = y;
 }
@@ -34,6 +35,16 @@ void uiLabelSetText(uiLabel *l, const char *text)
 	uiWindowsSetWindowText(l->hwnd, text);
 	// changing the text might necessitate a change in the label's size
 	uiWindowsControlMinimumSizeChanged(uiWindowsControl(l));
+}
+
+void uiLabelSetFont(uiLabel *l, const char *name, int size, int weight, int italic)
+{
+	if (l->hfont) {
+		DeleteObject(l->hfont);
+	}
+	l->hfont = CreateFontA(size, 0, 0, 0, weight, italic, FALSE, FALSE,
+			ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, name);
+	SendMessage(l->hwnd, WM_SETFONT, WPARAM (l->hfont), TRUE);
 }
 
 uiLabel *uiNewLabel(const char *text)

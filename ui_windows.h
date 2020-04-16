@@ -251,6 +251,7 @@ struct uiWindowsSizing {
 	LONG InternalLeading;
 };
 _UI_EXTERN void uiWindowsGetSizing(HWND hwnd, uiWindowsSizing *sizing);
+_UI_EXTERN void uiWindowsGetSizingWithFont(HWND hwnd, uiWindowsSizing *sizing, HFONT hfont);
 _UI_EXTERN void uiWindowsSizingDlgUnitsToPixels(uiWindowsSizing *sizing, int *x, int *y);
 _UI_EXTERN void uiWindowsSizingStandardPadding(uiWindowsSizing *sizing, int *x, int *y);
 

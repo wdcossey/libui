@@ -32,6 +32,11 @@ void getSizing(HWND hwnd, uiWindowsSizing *sizing, HFONT font)
 		logLastError(L"error releasing DC");
 }
 
+void uiWindowsGetSizingWithFont(HWND hwnd, uiWindowsSizing *sizing, HFONT hfont)
+{
+	return getSizing(hwnd, sizing, hfont ? hfont : hMessageFont);
+}
+
 void uiWindowsGetSizing(HWND hwnd, uiWindowsSizing *sizing)
 {
 	return getSizing(hwnd, sizing, hMessageFont);

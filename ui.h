@@ -192,6 +192,7 @@ typedef struct uiLabel uiLabel;
 #define uiLabel(this) ((uiLabel *) (this))
 _UI_EXTERN char *uiLabelText(uiLabel *l);
 _UI_EXTERN void uiLabelSetText(uiLabel *l, const char *text);
+_UI_EXTERN void uiLabelSetFont(uiLabel *l, const char *name, int size, int weight, int italic);
 _UI_EXTERN uiLabel *uiNewLabel(const char *text);
 
 typedef struct uiTab uiTab;
