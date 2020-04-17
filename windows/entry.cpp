@@ -169,6 +169,12 @@ int uiEntryReadOnly(uiEntry *e)
 	return (getStyle(e->hwnd) & ES_READONLY) != 0;
 }
 
+void uiEntryPasswordChar(uiEntry *e, char ch)
+{
+	if (SendMessage(e->hwnd, EM_SETPASSWORDCHAR, (WPARAM)ch, 0) == 0)
+		logLastError(L"error setting password char");
+}
+
 void uiEntrySetReadOnly(uiEntry *e, int readonly)
 {
 	WPARAM ro;
