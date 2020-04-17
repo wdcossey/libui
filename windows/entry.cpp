@@ -73,6 +73,9 @@ static void uiEntryDestroy(uiControl *c)
 
 	uiWindowsUnregisterWM_COMMANDHandler(e->hwnd);
 	uiWindowsEnsureDestroyWindow(e->hwnd);
+	if (e->hfont) {
+		DeleteObject(e->hfont);
+	}
 	uiFreeControl(uiControl(e));
 }
 

@@ -7,7 +7,17 @@ struct uiLabel {
 	HWND hwnd;
 };
 
-uiWindowsControlAllDefaults(uiLabel)
+static void uiLabelDestroy(uiControl *c)
+{
+	uiLabel *l = uiLabel(c);
+	uiWindowsEnsureDestroyWindow(l->hwnd);
+	if (l->hfont) {
+		DeleteObject(l->hfont);
+	}
+	uiFreeControl(uiControl(l));
+}
+
+uiWindowsControlAllDefaultsExceptDestroy(uiLabel)
 
 // via http://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
 #define labelHeight 8
