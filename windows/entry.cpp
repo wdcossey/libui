@@ -175,6 +175,16 @@ void uiEntryPasswordChar(uiEntry *e, char ch)
 		logLastError(L"error setting password char");
 }
 
+void uiEntryCenterText(uiEntry *e, int center)
+{
+	DWORD style = GetWindowLongPtr(e->hwnd, GWL_STYLE);
+	if (center == 0)
+		style |= ~ES_CENTER;
+	else
+		style |= ES_CENTER;
+	SetWindowLongPtrW(e->hwnd, GWL_STYLE, style);
+}
+
 void uiEntrySetReadOnly(uiEntry *e, int readonly)
 {
 	WPARAM ro;
