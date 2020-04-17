@@ -86,3 +86,23 @@ uiLabel *uiNewLabel(const char *text)
 
 	return l;
 }
+
+uiLabel *uiNewCenteredLabel(const char *text)
+{
+	uiLabel *l;
+	WCHAR *wtext;
+
+	uiWindowsNewControl(uiLabel, l);
+
+	wtext = toUTF16(text);
+	l->hwnd = uiWindowsEnsureCreateControlHWND(0,
+		L"static", wtext,
+		// SS_LEFTNOWORDWRAP clips text past the end; SS_NOPREFIX avoids accelerator translation
+		// controls are vertically aligned to the top by default (thanks Xeek in irc.freenode.net/#winapi)
+		SS_CENTER | SS_NOPREFIX,
+		hInstance, NULL,
+		TRUE);
+	uiprivFree(wtext);
+
+	return l;
+}
