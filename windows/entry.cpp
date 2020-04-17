@@ -11,6 +11,7 @@ struct uiEntry {
 	int (*onKeyEvent)(uiEntry *, uiAreaKeyEvent *);
 	void *self;
 	WNDPROC native_wndproc;
+	HFONT hfont = NULL;
 };
 
 
@@ -89,7 +90,7 @@ static void uiEntryMinimumSize(uiWindowsControl *c, int *width, int *height)
 
 	x = entryWidth;
 	y = entryHeight;
-	uiWindowsGetSizing(e->hwnd, &sizing);
+	uiWindowsGetSizingWithFont(e->hwnd, &sizing, e->hfont);
 	uiWindowsSizingDlgUnitsToPixels(&sizing, &x, &y);
 	*width = x;
 	*height = y;
@@ -104,6 +105,17 @@ static int defaultOnKeyEvent(uiEntry *e, uiAreaKeyEvent *event)
 {
 	// do nothing
 	return FALSE;
+}
+
+
+void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int italic)
+{
+	if (e->hfont) {
+		DeleteObject(e->hfont);
+	}
+	e->hfont = CreateFontA(size, 0, 0, 0, weight, italic, FALSE, FALSE,
+			ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, name);
+	SendMessage(e->hwnd, WM_SETFONT, WPARAM (e->hfont), TRUE);
 }
 
 void uiEntryUnsetFocus(uiEntry *e)
