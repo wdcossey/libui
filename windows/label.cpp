@@ -73,6 +73,8 @@ uiLabel *uiNewLabel(const char *text)
 	WCHAR *wtext;
 
 	uiWindowsNewControl(uiLabel, l);
+	l->minHeight = -1;
+	l->minWidth = -1;
 
 	wtext = toUTF16(text);
 	l->hwnd = uiWindowsEnsureCreateControlHWND(0,
@@ -93,6 +95,8 @@ uiLabel *uiNewCenteredLabel(const char *text)
 	WCHAR *wtext;
 
 	uiWindowsNewControl(uiLabel, l);
+	l->minHeight = -1;
+	l->minWidth = -1;
 
 	wtext = toUTF16(text);
 	l->hwnd = uiWindowsEnsureCreateControlHWND(0,
