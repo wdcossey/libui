@@ -12,6 +12,8 @@ struct uiEntry {
 	void *self;
 	WNDPROC native_wndproc;
 	HFONT hfont = NULL;
+	int prefHeight = 14;       // from http://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
+	int prefWidth = 107;       // this is actually the shorter progress bar width, but Microsoft only indicates as wide as necessary
 };
 
 
@@ -81,18 +83,14 @@ static void uiEntryDestroy(uiControl *c)
 
 uiWindowsControlAllDefaultsExceptDestroy(uiEntry)
 
-// from http://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
-#define entryWidth 107 /* this is actually the shorter progress bar width, but Microsoft only indicates as wide as necessary */
-#define entryHeight 14
-
 static void uiEntryMinimumSize(uiWindowsControl *c, int *width, int *height)
 {
 	uiEntry *e = uiEntry(c);
 	uiWindowsSizing sizing;
 	int x, y;
 
-	x = entryWidth;
-	y = entryHeight;
+	x = e->prefWidth;
+	y = e->prefHeight;
 	uiWindowsGetSizingWithFont(e->hwnd, &sizing, e->hfont);
 	uiWindowsSizingDlgUnitsToPixels(&sizing, &x, &y);
 	*width = x;
@@ -157,6 +155,13 @@ void uiEntrySetMaxLength(uiEntry *e, int max)
 	SendMessage(e->hwnd, EM_LIMITTEXT, WPARAM(max), TRUE);
 }
 
+void uiEntrySetPrefSize(uiEntry *e, int width, int height)
+{
+	e->prefWidth = width;
+	e->prefHeight = height;
+	uiWindowsControlMinimumSizeChanged(uiWindowsControl(e));
+}
+
 void uiEntryOnChanged(uiEntry *e, void (*f)(uiEntry *, void *), void *data)
 {
 	e->onChanged = f;
@@ -206,6 +211,8 @@ static uiEntry *finishNewEntry(DWORD style)
 	uiEntry *e;
 
 	uiWindowsNewControl(uiEntry, e);
+	e->prefHeight = 14;
+	e->prefWidth = 107;
 
 	e->hwnd = uiWindowsEnsureCreateControlHWND(WS_EX_CLIENTEDGE,
 		L"edit", L"",
