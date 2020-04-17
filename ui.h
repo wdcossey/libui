@@ -187,6 +187,7 @@ _UI_EXTERN void uiEntryUnsetFocus(uiEntry *e);
 _UI_EXTERN void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int italic);
 _UI_EXTERN void uiEntryPasswordChar(uiEntry *e, char ch);
 _UI_EXTERN void uiEntryCenterText(uiEntry *e, int center);
+_UI_EXTERN void uiEntrySetMaxLength(uiEntry *e, int max);
 _UI_EXTERN uiEntry *uiNewEntry(void);
 _UI_EXTERN uiEntry *uiNewPasswordEntry(void);
 _UI_EXTERN uiEntry *uiNewSearchEntry(void);

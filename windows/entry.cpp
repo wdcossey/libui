@@ -152,6 +152,11 @@ void uiEntrySelectAllText(uiEntry *e)
 	uiEntrySelectText(e, 0, -1);
 }
 
+void uiEntrySetMaxLength(uiEntry *e, int max)
+{
+	SendMessage(e->hwnd, EM_LIMITTEXT, WPARAM(max), TRUE);
+}
+
 void uiEntryOnChanged(uiEntry *e, void (*f)(uiEntry *, void *), void *data)
 {
 	e->onChanged = f;
