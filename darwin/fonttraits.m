@@ -159,6 +159,25 @@ static BOOL shouldReallyBeSemiCondensed(uiprivFontStyleData *d)
 	return testTTFOTFSubfamilyNames(d, CFSTR("Semi Condensed"));
 }
 
+double systemTextWeigth(uiTextWeight w)
+{
+	switch (w) {
+		case uiTextWeightThin:        return -0.8; break;
+		case uiTextWeightUltraLight:  return -0.6; break;
+		case uiTextWeightLight:       return -0.4; break;
+		case uiTextWeightBook:        return -0.27; break;
+		case uiTextWeightNormal:      return 0.; break;
+		case uiTextWeightMedium:      return 0.2; break;
+		case uiTextWeightSemiBold:    return 0.27; break;
+		case uiTextWeightBold:        return 0.37; break;
+		case uiTextWeightUltraBold:   return 0.47; break;
+		case uiTextWeightHeavy:       return 0.67; break;
+		case uiTextWeightUltraHeavy:  return 0.87; break;
+
+		return 0.0;
+	}
+}
+
 void uiprivProcessFontTraits(uiprivFontStyleData *d, uiFontDescriptor *out)
 {
 	double weight, width;
