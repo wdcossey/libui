@@ -114,7 +114,7 @@ void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int ital
 	if (e->hfont) {
 		DeleteObject(e->hfont);
 	}
-	e->hfont = CreateFontA(size, 0, 0, 0, weight, italic, FALSE, FALSE,
+	e->hfont = CreateFontA(-pointsToPixels(e->hwnd, size), 0, 0, 0, weight, italic, FALSE, FALSE,
 			ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, name);
 	SendMessage(e->hwnd, WM_SETFONT, WPARAM (e->hfont), TRUE);
 }

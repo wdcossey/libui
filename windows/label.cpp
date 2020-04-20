@@ -55,7 +55,7 @@ void uiLabelSetFont(uiLabel *l, const char *name, int size, int weight, int ital
 	if (l->hfont) {
 		DeleteObject(l->hfont);
 	}
-	l->hfont = CreateFontA(size, 0, 0, 0, weight, italic, FALSE, FALSE,
+	l->hfont = CreateFontA(-pointsToPixels(l->hwnd, size), 0, 0, 0, weight, italic, FALSE, FALSE,
 			ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, name);
 	SendMessage(l->hwnd, WM_SETFONT, WPARAM (l->hfont), TRUE);
 }

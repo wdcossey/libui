@@ -32,6 +32,14 @@ void getSizing(HWND hwnd, uiWindowsSizing *sizing, HFONT font)
 		logLastError(L"error releasing DC");
 }
 
+int pointsToPixels(HWND hwnd, int pt)
+{
+	HDC hdc = GetDC(hwnd);
+	int dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
+	ReleaseDC(hwnd, hdc);
+	return MulDiv(pt, dpiY, 96);
+}
+
 void uiWindowsGetSizingWithFont(HWND hwnd, uiWindowsSizing *sizing, HFONT hfont)
 {
 	return getSizing(hwnd, sizing, hfont ? hfont : hMessageFont);
