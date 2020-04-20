@@ -55,6 +55,7 @@ typedef struct uiInitOptions uiInitOptions;
 
 struct uiInitOptions {
 	size_t Size;
+	int skipTheme;
 };
 
 _UI_EXTERN const char *uiInit(uiInitOptions *options);
