@@ -435,3 +435,8 @@ uiWindow *uiprivWindowFromNSWindow(NSWindow *w)
 		return NULL;
 	return [windowDelegate lookupWindow:w];
 }
+
+void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b)
+{
+	[w->window setBackgroundColor: [NSColor colorWithCalibratedRed:r/255.f green:g/255.f blue:g/255.f alpha:1.0f]];
+}
