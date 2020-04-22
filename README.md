@@ -1,5 +1,12 @@
 # libui: a portable GUI library for C
 
+# Warning
+This fork aims to trim down libui to only have Window & Menu components, its goal is to be as minimal as possible for my needs.
+
+There will be __no__ Pull Requests back into the libui repo (unless additional functionality is added that would benifit the source project).
+
+If you are looking for the fantastic work done by @andlabs (Pietro Gagliardi) please see the source branch https://github.com/andlabs/libui
+
 This README is being written.<br>
 [![Build Status, Azure Pipelines](https://dev.azure.com/andlabs/libui/_apis/build/status/andlabs.libui?branchName=master)](https://dev.azure.com/andlabs/libui/_build/latest?definitionId=1&branchName=master)<br>
 [![Build Status, AppVeyor](https://ci.appveyor.com/api/projects/status/ouyk78c52mmisa31/branch/master?svg=true)](https://ci.appveyor.com/project/andlabs/libui/branch/master)
