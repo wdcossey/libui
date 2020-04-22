@@ -27,12 +27,12 @@ static void *append(void *thing, int type)
 }
 
 enum types {
-	window,
+	window/*,
 	box,
 	tab,
 	group,
 	form,
-	grid,
+	grid,*/
 };
 
 void setSpaced(int spaced)
@@ -47,7 +47,7 @@ void setSpaced(int spaced)
 		case window:
 			uiWindowSetMargined(uiWindow(p), spaced);
 			break;
-		case box:
+		/* case box:
 			uiBoxSetPadded(uiBox(p), spaced);
 			break;
 		case tab:
@@ -63,7 +63,7 @@ void setSpaced(int spaced)
 			break;
 		case grid:
 			uiGridSetPadded(uiGrid(p), spaced);
-			break;
+			break; */
 		}
 	}
 }
@@ -83,7 +83,7 @@ void querySpaced(char out[12])		// more than enough
 			if (uiWindowMargined(uiWindow(pp)))
 				m++;
 			break;
-		case box:
+		/*case box:
 			p = uiBoxPadded(uiBox(pp));
 			break;
 		case tab:
@@ -95,7 +95,7 @@ void querySpaced(char out[12])		// more than enough
 		case group:
 			if (uiGroupMargined(uiGroup(pp)))
 				m++;
-			break;
+			break;*/
 		// TODO form
 		// TODO grid
 		}
@@ -121,7 +121,7 @@ uiWindow *newWindow(const char *title, int width, int height, int hasMenubar)
 	append(w, window);
 	return w;
 }
-
+/*
 uiBox *newHorizontalBox(void)
 {
 	uiBox *b;
@@ -175,3 +175,4 @@ uiGrid *newGrid(void)
 	append(g, grid);
 	return g;
 }
+*/

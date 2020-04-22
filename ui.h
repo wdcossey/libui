@@ -45,11 +45,11 @@ _UI_ENUM(uiForEach) {
 	uiForEachStop,
 };
 
-typedef struct uiArea uiArea;
-typedef struct uiAreaHandler uiAreaHandler;
-typedef struct uiAreaDrawParams uiAreaDrawParams;
-typedef struct uiAreaMouseEvent uiAreaMouseEvent;
-typedef struct uiAreaKeyEvent uiAreaKeyEvent;
+//typedef struct uiArea uiArea;
+//typedef struct uiAreaHandler uiAreaHandler;
+//typedef struct uiAreaDrawParams uiAreaDrawParams;
+//typedef struct uiAreaMouseEvent uiAreaMouseEvent;
+//typedef struct uiAreaKeyEvent uiAreaKeyEvent;
 
 typedef struct uiInitOptions uiInitOptions;
 
@@ -78,7 +78,7 @@ _UI_EXTERN void uiTimer(int milliseconds, int (*f)(void *data), void *data);
 
 _UI_EXTERN void uiOnShouldQuit(int (*f)(void *data), void *data);
 
-_UI_EXTERN void uiFreeText(char *text);
+//_UI_EXTERN void uiFreeText(char *text);
 
 typedef struct uiControl uiControl;
 
@@ -144,7 +144,7 @@ _UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
 _UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
-
+/*
 typedef struct uiButton uiButton;
 #define uiButton(this) ((uiButton *) (this))
 _UI_EXTERN char *uiButtonText(uiButton *b);
@@ -292,6 +292,7 @@ _UI_EXTERN int uiMultilineEntryReadOnly(uiMultilineEntry *e);
 _UI_EXTERN void uiMultilineEntrySetReadOnly(uiMultilineEntry *e, int readonly);
 _UI_EXTERN uiMultilineEntry *uiNewMultilineEntry(void);
 _UI_EXTERN uiMultilineEntry *uiNewNonWrappingMultilineEntry(void);
+*/
 
 typedef struct uiMenuItem uiMenuItem;
 #define uiMenuItem(this) ((uiMenuItem *) (this))
@@ -318,7 +319,7 @@ _UI_EXTERN void uiMsgBoxError(uiWindow *parent, const char *title, const char *d
 
 
 typedef struct uiDrawContext uiDrawContext;
-
+/*
 struct uiAreaHandler {
 	void (*Draw)(uiAreaHandler *, uiArea *, uiAreaDrawParams *);
 	// TODO document that resizes cause a full redraw for non-scrolling areas; implementation-defined for scrolling areas
@@ -380,7 +381,6 @@ typedef struct uiDrawPath uiDrawPath;
 typedef struct uiDrawBrush uiDrawBrush;
 typedef struct uiDrawStrokeParams uiDrawStrokeParams;
 typedef struct uiDrawMatrix uiDrawMatrix;
-
 typedef struct uiDrawBrushGradientStop uiDrawBrushGradientStop;
 
 _UI_ENUM(uiDrawBrushType) {
@@ -515,6 +515,7 @@ _UI_EXTERN void uiDrawClip(uiDrawContext *c, uiDrawPath *path);
 
 _UI_EXTERN void uiDrawSave(uiDrawContext *c);
 _UI_EXTERN void uiDrawRestore(uiDrawContext *c);
+*/
 
 // uiAttribute stores information about an attribute in a
 // uiAttributedString.
@@ -590,6 +591,7 @@ _UI_EXTERN double uiAttributeSize(const uiAttribute *a);
 // Arial Black. libui does not do this, even on Windows (because the
 // DirectWrite API libui uses on Windows does not do this); to
 // specify Arial Black, use family Arial and weight uiTextWeightBlack.
+/*
 _UI_ENUM(uiTextWeight) {
 	uiTextWeightMinimum = 0,
 	uiTextWeightThin = 100,
@@ -615,6 +617,7 @@ _UI_EXTERN uiAttribute *uiNewWeightAttribute(uiTextWeight weight);
 // uiAttributeWeight() returns the font weight stored in a. It is an error
 // to call this on a uiAttribute that does not hold a font weight.
 _UI_EXTERN uiTextWeight uiAttributeWeight(const uiAttribute *a);
+*/
 
 // uiTextItalic represents possible italic modes for a font. Italic
 // represents "true" italics where the slanted glyphs have custom
@@ -695,12 +698,12 @@ _UI_ENUM(uiUnderline) {
 // uiNewUnderlineAttribute() creates a new uiAttribute that changes
 // the type of underline on the text it is applied to. It is an error to
 // specify an underline type not specified in uiUnderline.
-_UI_EXTERN uiAttribute *uiNewUnderlineAttribute(uiUnderline u);
+//_UI_EXTERN uiAttribute *uiNewUnderlineAttribute(uiUnderline u);
 
 // uiAttributeUnderline() returns the underline type stored in a. It is
 // an error to call this on a uiAttribute that does not hold an underline
 // style.
-_UI_EXTERN uiUnderline uiAttributeUnderline(const uiAttribute *a);
+//_UI_EXTERN uiUnderline uiAttributeUnderline(const uiAttribute *a);
 
 // uiUnderlineColor specifies the color of any underline on the text it
 // is applied to, regardless of the type of underline. In addition to
@@ -860,6 +863,7 @@ typedef struct uiAttributedString uiAttributedString;
 // details.
 typedef uiForEach (*uiAttributedStringForEachAttributeFunc)(const uiAttributedString *s, const uiAttribute *a, size_t start, size_t end, void *data);
 
+/*
 // @role uiAttributedString constructor
 // uiNewAttributedString() creates a new uiAttributedString from
 // initialString. The string will be entirely unattributed.
@@ -966,6 +970,7 @@ _UI_ENUM(uiDrawTextAlign) {
 typedef struct uiDrawTextLayoutParams uiDrawTextLayoutParams;
 
 // TODO const-correct this somehow
+/*
 struct uiDrawTextLayoutParams {
 	uiAttributedString *String;
 	uiFontDescriptor *DefaultFont;
@@ -1024,14 +1029,14 @@ _UI_EXTERN uiFontButton *uiNewFontButton(void);
 // After calling uiFreeFontButtonFont(), the contents of desc should be assumed to be undefined (though since you allocate desc itself, you can safely reuse desc for other font descriptors).
 // Calling uiFreeFontButtonFont() on a uiFontDescriptor not returned by uiFontButtonFont() results in undefined behavior.
 _UI_EXTERN void uiFreeFontButtonFont(uiFontDescriptor *desc);
-
+*/
 _UI_ENUM(uiModifiers) {
 	uiModifierCtrl = 1 << 0,
 	uiModifierAlt = 1 << 1,
 	uiModifierShift = 1 << 2,
 	uiModifierSuper = 1 << 3,
 };
-
+/*
 // TODO document drag captures
 struct uiAreaMouseEvent {
 	// TODO document what these mean for scrolling areas
@@ -1051,7 +1056,7 @@ struct uiAreaMouseEvent {
 
 	uint64_t Held1To64;
 };
-
+*/
 _UI_ENUM(uiExtKey) {
 	uiExtKeyEscape = 1,
 	uiExtKeyInsert,			// equivalent to "Help" on Apple keyboards
@@ -1093,7 +1098,7 @@ _UI_ENUM(uiExtKey) {
 	uiExtKeyNMultiply,
 	uiExtKeyNDivide,
 };
-
+/*
 struct uiAreaKeyEvent {
 	char Key;
 	uiExtKey ExtKey;
@@ -1471,6 +1476,7 @@ _UI_EXTERN void uiTableAppendButtonColumn(uiTable *t,
 
 // uiNewTable() creates a new uiTable with the specified parameters.
 _UI_EXTERN uiTable *uiNewTable(uiTableParams *params);
+*/
 
 #ifdef __cplusplus
 }

@@ -33,11 +33,11 @@ int onShouldQuit(void *data)
 	return 0;
 }
 
-uiBox *mainBox;
-uiTab *mainTab;
+//uiBox *mainBox;
+//uiTab *mainTab;
 
-uiBox *(*newhbox)(void);
-uiBox *(*newvbox)(void);
+//uiBox *(*newhbox)(void);
+//uiBox *(*newvbox)(void);
 
 int main(int argc, char *argv[])
 {
@@ -45,20 +45,20 @@ int main(int argc, char *argv[])
 	int i;
 	const char *err;
 	uiWindow *w;
-	uiBox *page2, *page3, *page4, *page5;
-	uiBox *page6, *page7, *page8, *page9, *page10;
-	uiBox *page11, *page12, *page13;
-	uiTab *page14;
-	uiBox *page15;
-	uiBox *page16;
-	uiTab *outerTab;
-	uiTab *innerTab;
+	//uiBox *page2, *page3, *page4, *page5;
+	//uiBox *page6, *page7, *page8, *page9, *page10;
+	//uiBox *page11, *page12, *page13;
+	//uiTab *page14;
+	//uiBox *page15;
+	//uiBox *page16;
+	//uiTab *outerTab;
+	//uiTab *innerTab;
 	int nomenus = 0;
 	int startspaced = 0;
 	int steps = 0;
 
-	newhbox = uiNewHorizontalBox;
-	newvbox = uiNewVerticalBox;
+	//newhbox = uiNewHorizontalBox;
+	//newvbox = uiNewVerticalBox;
 
 	memset(&o, 0, sizeof (uiInitOptions));
 	for (i = 1; i < argc; i++)
@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 		else if (strcmp(argv[i], "startspaced") == 0)
 			startspaced = 1;
 		else if (strcmp(argv[i], "swaphv") == 0) {
-			newhbox = uiNewVerticalBox;
-			newvbox = uiNewHorizontalBox;
+			//newhbox = uiNewVerticalBox;
+			//newvbox = uiNewHorizontalBox;
 		} else if (strcmp(argv[i], "steps") == 0)
 			steps = 1;
 		else {
@@ -92,42 +92,42 @@ int main(int argc, char *argv[])
 
 	uiOnShouldQuit(onShouldQuit, w);
 
-	mainBox = newHorizontalBox();
-	uiWindowSetChild(w, uiControl(mainBox));
+	//mainBox = newHorizontalBox();
+	//uiWindowSetChild(w, uiControl(mainBox));
 
-	outerTab = newTab();
-	uiBoxAppend(mainBox, uiControl(outerTab), 1);
+	//outerTab = newTab();
+	//uiBoxAppend(mainBox, uiControl(outerTab), 1);
 
-	mainTab = newTab();
-	uiTabAppend(outerTab, "Pages 1-5", uiControl(mainTab));
+	//mainTab = newTab();
+	//uiTabAppend(outerTab, "Pages 1-5", uiControl(mainTab));
 
 	// page 1 uses page 2's uiGroup
-	page2 = makePage2();
+	//page2 = makePage2();
 
-	makePage1(w);
-	uiTabAppend(mainTab, "Page 1", uiControl(page1));
+	//makePage1(w);
+	//uiTabAppend(mainTab, "Page 1", uiControl(page1));
 
-	uiTabAppend(mainTab, "Page 2", uiControl(page2));
+	//uiTabAppend(mainTab, "Page 2", uiControl(page2));
 
-	uiTabAppend(mainTab, "Empty Page", uiControl(uiNewHorizontalBox()));
+	//uiTabAppend(mainTab, "Empty Page", uiControl(uiNewHorizontalBox()));
 
-	page3 = makePage3();
-	uiTabAppend(mainTab, "Page 3", uiControl(page3));
+	//page3 = makePage3();
+	//uiTabAppend(mainTab, "Page 3", uiControl(page3));
 
-	page4 = makePage4();
-	uiTabAppend(mainTab, "Page 4", uiControl(page4));
+	//page4 = makePage4();
+	//uiTabAppend(mainTab, "Page 4", uiControl(page4));
 
-	page5 = makePage5(w);
-	uiTabAppend(mainTab, "Page 5", uiControl(page5));
+	//page5 = makePage5(w);
+	//uiTabAppend(mainTab, "Page 5", uiControl(page5));
 
-	innerTab = newTab();
-	uiTabAppend(outerTab, "Pages 6-10", uiControl(innerTab));
+	//innerTab = newTab();
+	//uiTabAppend(outerTab, "Pages 6-10", uiControl(innerTab));
 
-	page6 = makePage6();
-	uiTabAppend(innerTab, "Page 6", uiControl(page6));
+	//page6 = makePage6();
+	//uiTabAppend(innerTab, "Page 6", uiControl(page6));
 
-	page7 = makePage7();
-	uiTabAppend(innerTab, "Page 7", uiControl(page7));
+	//page7 = makePage7();
+	//uiTabAppend(innerTab, "Page 7", uiControl(page7));
 
 /*	page8 = makePage8();
 	uiTabAppend(innerTab, "Page 8", uiControl(page8));
@@ -138,32 +138,32 @@ int main(int argc, char *argv[])
 	page10 = makePage10();
 	uiTabAppend(innerTab, "Page 10", uiControl(page10));
 */
-	innerTab = newTab();
-	uiTabAppend(outerTab, "Pages 11-15", uiControl(innerTab));
+	//innerTab = newTab();
+	//uiTabAppend(outerTab, "Pages 11-15", uiControl(innerTab));
 
 //	page11 = makePage11();
 //	uiTabAppend(innerTab, "Page 11", uiControl(page11));
 
-	page12 = makePage12();
-	uiTabAppend(innerTab, "Page 12", uiControl(page12));
+	//page12 = makePage12();
+	//uiTabAppend(innerTab, "Page 12", uiControl(page12));
 
-	page13 = makePage13();
-	uiTabAppend(innerTab, "Page 13", uiControl(page13));
+	//page13 = makePage13();
+	//uiTabAppend(innerTab, "Page 13", uiControl(page13));
 
-	page14 = makePage14();
-	uiTabAppend(innerTab, "Page 14", uiControl(page14));
+	//page14 = makePage14();
+	//uiTabAppend(innerTab, "Page 14", uiControl(page14));
 
-	page15 = makePage15(w);
-	uiTabAppend(innerTab, "Page 15", uiControl(page15));
+	//page15 = makePage15(w);
+	//uiTabAppend(innerTab, "Page 15", uiControl(page15));
 
-	innerTab = newTab();
-	uiTabAppend(outerTab, "Pages 16-?", uiControl(innerTab));
+	//innerTab = newTab();
+	//uiTabAppend(outerTab, "Pages 16-?", uiControl(innerTab));
 
-	page16 = makePage16();
-	uiTabAppend(innerTab, "Page 16", uiControl(page16));
+	//page16 = makePage16();
+	//uiTabAppend(innerTab, "Page 16", uiControl(page16));
 
-	if (startspaced)
-		setSpaced(1);
+	//if (startspaced)
+	//	setSpaced(1);
 
 	uiControlShow(uiControl(w));
 	if (!steps)
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 			;
 	}
 	printf("after uiMain()\n");
-	freePage16();
+	//freePage16();
 	uiUninit();
 	printf("after uiUninit()\n");
 	return 0;

@@ -1,6 +1,6 @@
 // 6 april 2015
 #include "uipriv_windows.hpp"
-#include "attrstr.hpp"
+//#include "attrstr.hpp"
 
 HINSTANCE hInstance;
 int nCmdShow;
@@ -95,8 +95,8 @@ const char *uiInit(uiInitOptions *o)
 	if (hMessageFont == NULL)
 		return ieLastErr("loading default messagebox font; this is the default UI font");
 
-	if (initContainer(hDefaultIcon, hDefaultCursor) == 0)
-		return ieLastErr("initializing uiWindowsMakeContainer() window class");
+	//if (initContainer(hDefaultIcon, hDefaultCursor) == 0)
+	//	return ieLastErr("initializing uiWindowsMakeContainer() window class");
 
 	hollowBrush = (HBRUSH) GetStockObject(HOLLOW_BRUSH);
 	if (hollowBrush == NULL)
@@ -114,44 +114,44 @@ const char *uiInit(uiInitOptions *o)
 	// LONGTERM initialize COM security
 	// LONGTERM (windows vista) turn off COM exception handling
 
-	hr = initDraw();
-	if (hr != S_OK)
-		return ieHRESULT("initializing Direct2D", hr);
+	//hr = initDraw();
+	//if (hr != S_OK)
+	//	return ieHRESULT("initializing Direct2D", hr);
 
-	hr = uiprivInitDrawText();
-	if (hr != S_OK)
-		return ieHRESULT("initializing DirectWrite", hr);
+	//hr = uiprivInitDrawText();
+	//if (hr != S_OK)
+	//	return ieHRESULT("initializing DirectWrite", hr);
 
-	if (registerAreaClass(hDefaultIcon, hDefaultCursor) == 0)
-		return ieLastErr("registering uiArea window class");
+	//if (registerAreaClass(hDefaultIcon, hDefaultCursor) == 0)
+	//	return ieLastErr("registering uiArea window class");
 
 	if (registerMessageFilter() == 0)
 		return ieLastErr("registering libui message filter");
 
-	if (registerD2DScratchClass(hDefaultIcon, hDefaultCursor) == 0)
-		return ieLastErr("initializing D2D scratch window class");
+	//if (registerD2DScratchClass(hDefaultIcon, hDefaultCursor) == 0)
+	//	return ieLastErr("initializing D2D scratch window class");
 
-	hr = uiprivInitImage();
-	if (hr != S_OK)
-		return ieHRESULT("initializing WIC", hr);
+	//hr = uiprivInitImage();
+	//if (hr != S_OK)
+	//	return ieHRESULT("initializing WIC", hr);
 
 	return NULL;
 }
 
 void uiUninit(void)
 {
-	uiprivUninitTimers();
-	uiprivUninitImage();
+	//uiprivUninitTimers();
+	//uiprivUninitImage();
 	uninitMenus();
-	unregisterD2DScratchClass();
+	//unregisterD2DScratchClass();
 	unregisterMessageFilter();
-	unregisterArea();
-	uiprivUninitDrawText();
-	uninitDraw();
+	//unregisterArea();
+	//uiprivUninitDrawText();
+	//uninitDraw();
 	CoUninitialize();
 	if (DeleteObject(hollowBrush) == 0)
 		logLastError(L"error freeing hollow brush");
-	uninitContainer();
+	//uninitContainer();
 	if (DeleteObject(hMessageFont) == 0)
 		logLastError(L"error deleting control font");
 	unregisterWindowClass();

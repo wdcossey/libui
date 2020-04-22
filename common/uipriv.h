@@ -37,6 +37,7 @@ extern void uiprivDoUserBug(const char *file, const char *line, const char *func
 // shouldquit.c
 extern int uiprivShouldQuit(void);
 
+/*
 // areaevents.c
 typedef struct uiprivClickCounter uiprivClickCounter;
 // you should call Reset() to zero-initialize a new instance
@@ -58,6 +59,7 @@ extern int uiprivFromScancode(uintptr_t, uiAreaKeyEvent *);
 extern void uiprivFallbackSkew(uiDrawMatrix *, double, double, double, double);
 extern void uiprivScaleCenter(double, double, double *, double *);
 extern void uiprivFallbackTransformSize(uiDrawMatrix *, double *, double *);
+*/
 
 // OS-specific text.* files
 extern int uiprivStricmp(const char *a, const char *b);

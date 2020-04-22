@@ -10,17 +10,17 @@ static LRESULT CALLBACK filterProc(int code, WPARAM wParam, LPARAM lParam)
 	if (code < 0)
 		goto callNext;
 
-	if (areaFilter(msg))		// don't continue to our IsDialogMessage() hack if the area handled it
-		goto discard;
+	//if (areaFilter(msg))		// don't continue to our IsDialogMessage() hack if the area handled it
+	//	goto discard;
 
 	// TODO IsDialogMessage() hack here
 
 	// otherwise keep going
 	goto callNext;
 
-discard:
+//discard:
 	// we handled it; discard the message so the dialog manager doesn't see it
-	return 1;
+//	return 1;
 
 callNext:
 	return CallNextHookEx(filter, code, wParam, lParam);
