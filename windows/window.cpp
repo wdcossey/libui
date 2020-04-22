@@ -12,6 +12,7 @@ struct uiWindow {
 	int visible;
 	int (*onClosing)(uiWindow *, void *);
 	void *onClosingData;
+	void (*onHide)(uiWindow *);
 	int margined;
 	BOOL hasMenubar;
 	void (*onContentSizeChanged)(uiWindow *, void *);
@@ -116,6 +117,13 @@ static LRESULT CALLBACK windowWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		// don't worry about the return value; we let DefWindowProcW() handle this message
 		SendMessageW(hwnd, WM_ERASEBKGND, wParam, lParam);
 		return 0;
+	case WM_SHOWWINDOW:
+		if(wParam == FALSE) {
+			if (w->onHide) {
+				w->onHide(w);
+			}
+		}
+		break;
 	case WM_CLOSE:
 		if ((*(w->onClosing))(w, w->onClosingData))
 			uiControlDestroy(uiControl(w));
@@ -147,6 +155,11 @@ void unregisterWindowClass(void)
 static int defaultOnClosing(uiWindow *w, void *data)
 {
 	return 0;
+}
+
+static void defaultOnHide(uiWindow *w)
+{
+	// do nothing
 }
 
 static void defaultOnPositionContentSizeChanged(uiWindow *w, void *data)
@@ -386,6 +399,11 @@ void uiWindowOnClosing(uiWindow *w, int (*f)(uiWindow *, void *), void *data)
 	w->onClosingData = data;
 }
 
+void uiWindowOnResign(uiWindow *w, void (*f)(uiWindow *w))
+{
+	w->onHide = f;
+}
+
 int uiWindowBorderless(uiWindow *w)
 {
 	return w->borderless;
@@ -455,6 +473,14 @@ void uiWindowResetAlwaysVisible(uiWindow *w)
 	SetWindowPos(w->hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 }
 
+void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b)
+{
+	SetClassLongPtrA(w->hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)CreateSolidBrush(RGB(r, g, b)));
+	RECT rect;
+	GetWindowRect(w->hwnd, &rect);
+	InvalidateRect(w->hwnd, &rect, TRUE);
+}
+
 // see http://blogs.msdn.com/b/oldnewthing/archive/2003/09/11/54885.aspx and http://blogs.msdn.com/b/oldnewthing/archive/2003/09/13/54917.aspx
 // TODO use clientSizeToWindowSize()
 static void setClientSize(uiWindow *w, int width, int height, BOOL hasMenubar, DWORD style, DWORD exstyle)
@@ -519,6 +545,7 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 	setClientSize(w, width, height, hasMenubarBOOL, style, exstyle);
 
 	uiWindowOnClosing(w, defaultOnClosing, NULL);
+	uiWindowOnResign(w, defaultOnHide);
 	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
 
 	windows[w] = true;

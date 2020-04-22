@@ -119,6 +119,12 @@ const char *uiInit(uiInitOptions *o)
 		delegate = [uiprivAppDelegate new];
 		[uiprivNSApp() setDelegate:delegate];
 
+		if (uiprivOptions.skipTheme > 0) {
+			if (@available(macOS 10.14, *)) {
+				NSApp.appearance = [NSAppearance appearanceNamed: NSAppearanceNameAqua];
+			}
+		}
+
 		uiprivInitAlloc();
 		uiprivLoadFutures();
 		uiprivLoadUndocumented();

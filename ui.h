@@ -55,6 +55,7 @@ typedef struct uiInitOptions uiInitOptions;
 
 struct uiInitOptions {
 	size_t Size;
+	int skipTheme;
 };
 
 _UI_EXTERN const char *uiInit(uiInitOptions *options);
@@ -133,6 +134,7 @@ _UI_EXTERN int uiWindowFullscreen(uiWindow *w);
 _UI_EXTERN void uiWindowSetFullscreen(uiWindow *w, int fullscreen);
 _UI_EXTERN void uiWindowOnContentSizeChanged(uiWindow *w, void (*f)(uiWindow *, void *), void *data);
 _UI_EXTERN void uiWindowOnClosing(uiWindow *w, int (*f)(uiWindow *w, void *data), void *data);
+_UI_EXTERN void uiWindowOnResign(uiWindow *w, void (*f)(uiWindow *w));
 _UI_EXTERN int uiWindowBorderless(uiWindow *w);
 _UI_EXTERN void uiWindowSetBorderless(uiWindow *w, int borderless);
 _UI_EXTERN void uiWindowSetChild(uiWindow *w, uiControl *child);
@@ -142,6 +144,7 @@ _UI_EXTERN void uiWindowSetCentered(uiWindow *w);
 _UI_EXTERN void uiWindowSetToFront(uiWindow *w);
 _UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
 _UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
+_UI_EXTERN void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
 /*
@@ -183,6 +186,11 @@ _UI_EXTERN void uiEntryOnKeyEvent(uiEntry *e, int (*f)(uiEntry *e, uiAreaKeyEven
 _UI_EXTERN int uiEntryReadOnly(uiEntry *e);
 _UI_EXTERN void uiEntrySetReadOnly(uiEntry *e, int readonly);
 _UI_EXTERN void uiEntryUnsetFocus(uiEntry *e);
+_UI_EXTERN void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int italic);
+_UI_EXTERN void uiEntryPasswordChar(uiEntry *e, char ch);
+_UI_EXTERN void uiEntryCenterText(uiEntry *e, int center);
+_UI_EXTERN void uiEntrySetMaxLength(uiEntry *e, int max);
+_UI_EXTERN void uiEntrySetPrefSize(uiEntry *e, int width, int height);
 _UI_EXTERN uiEntry *uiNewEntry(void);
 _UI_EXTERN uiEntry *uiNewPasswordEntry(void);
 _UI_EXTERN uiEntry *uiNewSearchEntry(void);
@@ -191,7 +199,10 @@ typedef struct uiLabel uiLabel;
 #define uiLabel(this) ((uiLabel *) (this))
 _UI_EXTERN char *uiLabelText(uiLabel *l);
 _UI_EXTERN void uiLabelSetText(uiLabel *l, const char *text);
+_UI_EXTERN void uiLabelSetFont(uiLabel *l, const char *name, int size, int weight, int italic);
+_UI_EXTERN void uiLabelSetMinSize(uiLabel *l, int width, int height);
 _UI_EXTERN uiLabel *uiNewLabel(const char *text);
+_UI_EXTERN uiLabel *uiNewCenteredLabel(const char *text);
 
 typedef struct uiTab uiTab;
 #define uiTab(this) ((uiTab *) (this))

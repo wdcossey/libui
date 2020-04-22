@@ -157,6 +157,7 @@ extern BOOL showColorDialog(HWND parent, struct colorDialogRGBA *c);
 
 // sizing.cpp
 extern void getSizing(HWND hwnd, uiWindowsSizing *sizing, HFONT font);
+extern int pointsToPixels(HWND hwnd, int pt);
 
 // TODO move into a dedicated file abibugs.cpp when we rewrite the drawing code
 extern D2D1_SIZE_F realGetSize(ID2D1RenderTarget *rt);
