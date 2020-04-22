@@ -1,20 +1,89 @@
 // 14 august 2015
 #import "uipriv_darwin.h"
 
+void experiment(NSTextField *);
+
+@interface TextFieldFormatter : NSFormatter
+{
+	int maxLength;
+}
+- (void)setMaximumLength:(int)len;
+- (int)maximumLength;
+
+@end
+
+@implementation TextFieldFormatter
+
+- (id)init
+{
+	if(self = [super init]) {
+		maxLength = INT_MAX;
+	}
+	return self;
+}
+
+- (void)setMaximumLength:(int)len
+{
+	maxLength = len;
+}
+
+- (int)maximumLength
+{
+	return maxLength;
+}
+
+- (NSString *)stringForObjectValue:(id)object
+{
+	return (NSString *)object;
+}
+
+- (BOOL)getObjectValue:(id *)object forString:(NSString *)string errorDescription:(NSString **)error
+{
+	*object = string;
+	return YES;
+}
+
+- (BOOL)isPartialStringValid:(NSString **)partialStringPtr
+	proposedSelectedRange:(NSRangePointer)proposedSelRangePtr originalString:(NSString *)origString
+	originalSelectedRange:(NSRange)origSelRange errorDescription:(NSString **)error
+{
+	if ((int)[*partialStringPtr length] > maxLength) {
+		return NO;
+	}
+	return YES;
+}
+
+- (NSAttributedString *)attributedStringForObjectValue:(id)anObject withDefaultAttributes:(NSDictionary *)attributes
+{
+	return nil;
+}
+
+@end
+
 // Text fields for entering text have no intrinsic width; we'll use the default Interface Builder width for them.
 #define textfieldWidth 96
 
 @interface libui_intrinsicWidthNSTextField : NSTextField
+@property int pref_width;
+@property int pref_height;
+- (void)setPrefSize:(int)w :(int)h;
 @end
 
 @implementation libui_intrinsicWidthNSTextField
+
+- (void)setPrefSize:(int)w :(int)h
+{
+	self.pref_width = w;
+	self.pref_height = h;
+}
 
 - (NSSize)intrinsicContentSize
 {
 	NSSize s;
 
 	s = [super intrinsicContentSize];
-	s.width = textfieldWidth;
+	if (self.pref_width > 0) s.width = self.pref_width;
+	if (self.pref_height > 0) s.height = self.pref_height;
 	return s;
 }
 
@@ -22,16 +91,26 @@
 
 // TODO does this have one on its own?
 @interface libui_intrinsicWidthNSSecureTextField : NSSecureTextField
+@property int pref_width;
+@property int pref_height;
+- (void)setPrefSize:(int)w :(int)h;
 @end
 
 @implementation libui_intrinsicWidthNSSecureTextField
+
+- (void)setPrefSize:(int)w :(int)h
+{
+	self.pref_width = w;
+	self.pref_height = h;
+}
 
 - (NSSize)intrinsicContentSize
 {
 	NSSize s;
 
 	s = [super intrinsicContentSize];
-	s.width = textfieldWidth;
+	if (self.pref_width > 0) s.width = self.pref_width;
+	if (self.pref_height > 0) s.height = self.pref_height;
 	return s;
 }
 
@@ -39,17 +118,42 @@
 
 // TODO does this have one on its own?
 @interface libui_intrinsicWidthNSSearchField : NSSearchField
+@property int pref_width;
+@property int pref_height;
+- (void)setPrefSize:(int)w :(int)h;
 @end
 
 @implementation libui_intrinsicWidthNSSearchField
+
+- (void)setPrefSize:(int)w :(int)h
+{
+	self.pref_width = w;
+	self.pref_height = h;
+}
 
 - (NSSize)intrinsicContentSize
 {
 	NSSize s;
 
 	s = [super intrinsicContentSize];
-	s.width = textfieldWidth;
+	if (self.pref_width > 0) s.width = self.pref_width;
+	if (self.pref_height > 0) s.height = self.pref_height;
 	return s;
+}
+
+@end
+
+
+@interface libui_IEntry<ObjectType> : NSObject
+- (void)enqueue:(ObjectType)value;
+- (void)setPrefSize:(ObjectType)obj withWidth:(int)w withHeight:(int)h;
+@end
+
+@implementation libui_IEntry
+
+- (void)setPrefSize:(id)obj :(int)w :(int)h
+{
+	[obj setPrefSize:w:h];
 }
 
 @end
@@ -60,6 +164,8 @@ struct uiEntry {
 	void (*onChanged)(uiEntry *, void *);
 	void *onChangedData;
 	int (*onKeyEvent)(uiEntry *, uiAreaKeyEvent *);
+	TextFieldFormatter *formatter;
+	void (*setPreferredSize)(NSSize);
 };
 
 static BOOL isSearchField(NSTextField *tf)
@@ -215,6 +321,43 @@ void uiEntrySetReadOnly(uiEntry *e, int readonly)
 	[e->textfield setEditable:editable];
 }
 
+void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int italic)
+{
+	NSFontTraitMask traits = 0;
+	if (italic > 0)
+		traits = NSFontItalicTrait;
+	NSFont* font = [[NSFontManager sharedFontManager]
+		fontWithFamily:uiprivToNSString(name) traits:traits weight:systemTextWeigth((uiTextWeight)weight) size:size];
+	[e->textfield setFont:font];
+}
+
+void uiEntryPasswordChar(uiEntry *e, char ch)
+{
+	// todo: no straight forward way. check overriding NSSecureTextFieldCell
+}
+
+void uiEntryCenterText(uiEntry *e, int center)
+{
+	NSTextAlignment align = NSTextAlignmentNatural;
+	if (center > 0) {
+		align = NSTextAlignmentCenter;
+	}
+	[e->textfield setAlignment:align];
+}
+
+void uiEntrySetMaxLength(uiEntry *e, int max)
+{
+	if (e->formatter != nil) {
+		[e->formatter setMaximumLength:max];
+	}
+}
+
+void uiEntrySetPrefSize(uiEntry *e, int width, int height)
+{
+	libui_IEntry<NSTextField *> *iface = [[libui_IEntry alloc] init];
+	[iface setPrefSize:e->textfield:width:height];
+}
+
 static void defaultOnChanged(uiEntry *e, void *data)
 {
 	// do nothing
@@ -270,6 +413,9 @@ static uiEntry *finishNewEntry(Class class)
 	uiDarwinNewControl(uiEntry, e);
 
 	e->textfield = realNewEditableTextField(class);
+	e->formatter = [TextFieldFormatter new];
+	[e->textfield setFormatter:e->formatter];
+	[e->textfield setPrefSize:textfieldWidth:-1];
 
 	if (entryDelegate == nil) {
 		entryDelegate = [[entryDelegateClass new] autorelease];

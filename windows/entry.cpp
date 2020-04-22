@@ -11,6 +11,9 @@ struct uiEntry {
 	int (*onKeyEvent)(uiEntry *, uiAreaKeyEvent *);
 	void *self;
 	WNDPROC native_wndproc;
+	HFONT hfont = NULL;
+	int prefHeight = 14;       // from http://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
+	int prefWidth = 107;       // this is actually the shorter progress bar width, but Microsoft only indicates as wide as necessary
 };
 
 
@@ -72,14 +75,13 @@ static void uiEntryDestroy(uiControl *c)
 
 	uiWindowsUnregisterWM_COMMANDHandler(e->hwnd);
 	uiWindowsEnsureDestroyWindow(e->hwnd);
+	if (e->hfont) {
+		DeleteObject(e->hfont);
+	}
 	uiFreeControl(uiControl(e));
 }
 
 uiWindowsControlAllDefaultsExceptDestroy(uiEntry)
-
-// from http://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
-#define entryWidth 107 /* this is actually the shorter progress bar width, but Microsoft only indicates as wide as necessary */
-#define entryHeight 14
 
 static void uiEntryMinimumSize(uiWindowsControl *c, int *width, int *height)
 {
@@ -87,9 +89,9 @@ static void uiEntryMinimumSize(uiWindowsControl *c, int *width, int *height)
 	uiWindowsSizing sizing;
 	int x, y;
 
-	x = entryWidth;
-	y = entryHeight;
-	uiWindowsGetSizing(e->hwnd, &sizing);
+	x = e->prefWidth;
+	y = e->prefHeight;
+	uiWindowsGetSizingWithFont(e->hwnd, &sizing, e->hfont);
 	uiWindowsSizingDlgUnitsToPixels(&sizing, &x, &y);
 	*width = x;
 	*height = y;
@@ -104,6 +106,17 @@ static int defaultOnKeyEvent(uiEntry *e, uiAreaKeyEvent *event)
 {
 	// do nothing
 	return FALSE;
+}
+
+
+void uiEntrySetFont(uiEntry *e, const char *name, int size, int weight, int italic)
+{
+	if (e->hfont) {
+		DeleteObject(e->hfont);
+	}
+	e->hfont = CreateFontA(-pointsToPixels(e->hwnd, size), 0, 0, 0, weight, italic, FALSE, FALSE,
+			ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, name);
+	SendMessage(e->hwnd, WM_SETFONT, WPARAM (e->hfont), TRUE);
 }
 
 void uiEntryUnsetFocus(uiEntry *e)
@@ -137,6 +150,18 @@ void uiEntrySelectAllText(uiEntry *e)
 	uiEntrySelectText(e, 0, -1);
 }
 
+void uiEntrySetMaxLength(uiEntry *e, int max)
+{
+	SendMessage(e->hwnd, EM_LIMITTEXT, WPARAM(max), TRUE);
+}
+
+void uiEntrySetPrefSize(uiEntry *e, int width, int height)
+{
+	e->prefWidth = width;
+	e->prefHeight = height;
+	uiWindowsControlMinimumSizeChanged(uiWindowsControl(e));
+}
+
 void uiEntryOnChanged(uiEntry *e, void (*f)(uiEntry *, void *), void *data)
 {
 	e->onChanged = f;
@@ -152,6 +177,22 @@ void uiEntryOnKeyEvent(uiEntry *e, int (*f)(uiEntry *, uiAreaKeyEvent *))
 int uiEntryReadOnly(uiEntry *e)
 {
 	return (getStyle(e->hwnd) & ES_READONLY) != 0;
+}
+
+void uiEntryPasswordChar(uiEntry *e, char ch)
+{
+	if (SendMessage(e->hwnd, EM_SETPASSWORDCHAR, (WPARAM)ch, 0) == 0)
+		logLastError(L"error setting password char");
+}
+
+void uiEntryCenterText(uiEntry *e, int center)
+{
+	DWORD style = GetWindowLongPtr(e->hwnd, GWL_STYLE);
+	if (center == 0)
+		style |= ~ES_CENTER;
+	else
+		style |= ES_CENTER;
+	SetWindowLongPtrW(e->hwnd, GWL_STYLE, style);
 }
 
 void uiEntrySetReadOnly(uiEntry *e, int readonly)
@@ -170,6 +211,8 @@ static uiEntry *finishNewEntry(DWORD style)
 	uiEntry *e;
 
 	uiWindowsNewControl(uiEntry, e);
+	e->prefHeight = 14;
+	e->prefWidth = 107;
 
 	e->hwnd = uiWindowsEnsureCreateControlHWND(WS_EX_CLIENTEDGE,
 		L"edit", L"",
