@@ -10,6 +10,7 @@ struct uiWindow {
 	int margined;
 	int (*onClosing)(uiWindow *, void *);
 	void *onClosingData;
+	void (*onResigned)(uiWindow *);
 	uiprivSingleChildConstraints constraints;
 	void (*onContentSizeChanged)(uiWindow *, void *);
 	void *onContentSizeChangedData;
@@ -36,6 +37,7 @@ struct uiWindow {
 	uiprivMap *windows;
 }
 - (BOOL)windowShouldClose:(id)sender;
+- (void)windowDidResignKey:(NSNotification *)note;
 - (void)windowDidResize:(NSNotification *)note;
 - (void)windowDidEnterFullScreen:(NSNotification *)note;
 - (void)windowDidExitFullScreen:(NSNotification *)note;
@@ -69,6 +71,15 @@ struct uiWindow {
 	if ((*(w->onClosing))(w, w->onClosingData))
 		uiControlDestroy(uiControl(w));
 	return NO;
+}
+
+- (void)windowDidResignKey:(NSNotification *)note
+{
+	uiWindow *w;
+	w = [self lookupWindow:((NSWindow *) [note object])];
+	if (w->onResigned) {
+		w->onResigned(w);
+	}
 }
 
 - (void)windowDidResize:(NSNotification *)note
@@ -305,6 +316,11 @@ void uiWindowOnClosing(uiWindow *w, int (*f)(uiWindow *, void *), void *data)
 	w->onClosingData = data;
 }
 
+void uiWindowOnResign(uiWindow *w, void (*f)(uiWindow*))
+{
+	w->onResigned = f;
+}
+
 int uiWindowBorderless(uiWindow *w)
 {
 	return w->borderless;
@@ -385,6 +401,11 @@ static int defaultOnClosing(uiWindow *w, void *data)
 	return 0;
 }
 
+static void defaultOnResign(uiWindow *w)
+{
+	// do nothing
+}
+
 static void defaultOnPositionContentSizeChanged(uiWindow *w, void *data)
 {
 	// do nothing
@@ -414,6 +435,7 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 	}
 	[windowDelegate registerWindow:w];
 	uiWindowOnClosing(w, defaultOnClosing, NULL);
+	uiWindowOnResign(w, defaultOnResign);
 	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
 
 	return w;
