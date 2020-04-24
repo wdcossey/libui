@@ -341,7 +341,7 @@ struct uiAreaHandler {
 	void (*DragBroken)(uiAreaHandler *, uiArea *);
 	int (*KeyEvent)(uiAreaHandler *, uiArea *, uiAreaKeyEvent *);
 };
-
+*/
 // TODO RTL layouts?
 // TODO reconcile edge and corner naming
 _UI_ENUM(uiWindowResizeEdge) {
@@ -357,7 +357,7 @@ _UI_ENUM(uiWindowResizeEdge) {
 	// TODO GDK doesn't seem to have any others, including for keyboards...
 	// TODO way to bring up the system menu instead?
 };
-
+/*
 #define uiArea(this) ((uiArea *) (this))
 // TODO give a better name
 // TODO document the types of width and height
@@ -981,7 +981,7 @@ _UI_ENUM(uiDrawTextAlign) {
 typedef struct uiDrawTextLayoutParams uiDrawTextLayoutParams;
 
 // TODO const-correct this somehow
-/*
+
 struct uiDrawTextLayoutParams {
 	uiAttributedString *String;
 	uiFontDescriptor *DefaultFont;
@@ -1109,7 +1109,7 @@ _UI_ENUM(uiExtKey) {
 	uiExtKeyNMultiply,
 	uiExtKeyNDivide,
 };
-/*
+
 struct uiAreaKeyEvent {
 	char Key;
 	uiExtKey ExtKey;
@@ -1119,7 +1119,7 @@ struct uiAreaKeyEvent {
 
 	int Up;
 };
-
+/*
 typedef struct uiColorButton uiColorButton;
 #define uiColorButton(this) ((uiColorButton *) (this))
 _UI_EXTERN void uiColorButtonColor(uiColorButton *b, double *r, double *g, double *bl, double *a);

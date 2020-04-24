@@ -109,9 +109,9 @@ extern void uiprivSingleChildConstraintsSetMargined(uiprivSingleChildConstraints
 extern int uiprivSendAreaEvents(NSEvent *);
 
 // areaevents.m
-extern BOOL uiprivFromKeycode(unsigned short keycode, uiAreaKeyEvent *ke);
-extern BOOL uiprivKeycodeModifier(unsigned short keycode, uiModifiers *mod);
-extern uiModifiers parseModifiers(NSEvent *e);
+//extern BOOL uiprivFromKeycode(unsigned short keycode, uiAreaKeyEvent *ke);
+//extern BOOL uiprivKeycodeModifier(unsigned short keycode, uiModifiers *mod);
+//extern uiModifiers parseModifiers(NSEvent *e);
 
 // draw.m
 extern uiDrawContext *uiprivDrawNewContext(CGContextRef, CGFloat);
@@ -145,7 +145,7 @@ extern void uiprivScrollViewFreeData(NSScrollView *sv, uiprivScrollViewData *d);
 extern NSTextField *uiprivNewLabel(NSString *str);
 
 // image.m
-extern NSImage *uiprivImageNSImage(uiImage *);
+//extern NSImage *uiprivImageNSImage(uiImage *);
 
 // winmoveresize.m
 extern void uiprivDoManualMove(NSWindow *w, NSEvent *initialEvent);
@@ -164,5 +164,5 @@ extern CFStringRef uiprivUNDOC_kCTFontPreferredSubFamilyNameKey;
 extern CFStringRef uiprivUNDOC_kCTFontPreferredFamilyNameKey;
 extern void uiprivLoadUndocumented(void);
 
-double systemTextWeigth(uiTextWeight w);
+//double systemTextWeigth(uiTextWeight w);
 
