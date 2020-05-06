@@ -295,14 +295,16 @@ static void uiWindowChildVisibilityChanged(uiWindowsControl *c)
 	uiWindowsControlMinimumSizeChanged(c);
 }
 
-char *uiWindowTitle(uiWindow *w)
+char *uiWindowTitle(void *w)
 {
-	return uiWindowsWindowText(w->hwnd);
+	HWND hwnd = static_cast<HWND>(w);
+	return uiWindowsWindowText(hwnd);
 }
 
-void uiWindowSetTitle(uiWindow *w, const char *title)
+void uiWindowSetTitle(void *w, const char *title)
 {
-	uiWindowsSetWindowText(w->hwnd, title);
+	HWND hwnd = static_cast<HWND>(w);
+	uiWindowsSetWindowText(hwnd, title);
 	// don't queue resize; the caption isn't part of what affects layout and sizing of the client area (it'll be ellipsized if too long)
 }
 
@@ -421,13 +423,15 @@ void uiWindowSetBorderless(uiWindow *w, int borderless)
 			setStyle(w->hwnd, getStyle(w->hwnd) | WS_OVERLAPPEDWINDOW);
 }
 
-void uiWindowSetChild(uiWindow *w, uiControl *child)
+void uiWindowSetChild(uiWindow *w, void *child)
 {
+	uiControl *castChild = static_cast<uiControl*>(child);
+	
 	if (w->child != NULL) {
 		uiControlSetParent(w->child, NULL);
 		uiWindowsControlSetParentHWND(uiWindowsControl(w->child), NULL);
 	}
-	w->child = child;
+	w->child = castChild;
 	if (w->child != NULL) {
 		uiControlSetParent(w->child, uiControl(w));
 		uiWindowsControlSetParentHWND(uiWindowsControl(w->child), w->hwnd);
@@ -447,38 +451,45 @@ void uiWindowSetMargined(uiWindow *w, int margined)
 	windowRelayout(w);
 }
 
-void uiWindowSetCentered(uiWindow *w)
+void uiWindowSetCentered(void *w)
 {
+	HWND hwnd = static_cast<HWND>(w);
+	
 	RECT rc;
-	GetWindowRect(w->hwnd, &rc);
+	GetWindowRect(hwnd, &rc);
 
 	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right + rc.left) / 2;
 	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom + rc.top) / 2;
 
-	SetWindowPos(w->hwnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+	SetWindowPos(hwnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 }
 
-void uiWindowSetToFront(uiWindow *w)
+void uiWindowSetToFront(void *w)
 {
-	BringWindowToTop(w->hwnd);
+	HWND hwnd = static_cast<HWND>(w);
+	
+	BringWindowToTop(hwnd);
 }
 
-void uiWindowSetAlwaysVisible(uiWindow *w)
+void uiWindowSetAlwaysVisible(void *w)
 {
-	SetWindowPos(w->hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	HWND hwnd = static_cast<HWND>(w);
+	SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 }
 
-void uiWindowResetAlwaysVisible(uiWindow *w)
+void uiWindowResetAlwaysVisible(void *w)
 {
-	SetWindowPos(w->hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	HWND hwnd = static_cast<HWND>(w);
+	SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 }
 
-void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b)
+void uiWindowSetBackgroundColor(void *w, int r, int g, int b)
 {
-	SetClassLongPtrA(w->hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)CreateSolidBrush(RGB(r, g, b)));
+	HWND hwnd = static_cast<HWND>(w);
+	SetClassLongPtrA(hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)CreateSolidBrush(RGB(r, g, b)));
 	RECT rect;
-	GetWindowRect(w->hwnd, &rect);
-	InvalidateRect(w->hwnd, &rect, TRUE);
+	GetWindowRect(hwnd, &rect);
+	InvalidateRect(hwnd, &rect, TRUE);
 }
 
 // see http://blogs.msdn.com/b/oldnewthing/archive/2003/09/11/54885.aspx and http://blogs.msdn.com/b/oldnewthing/archive/2003/09/13/54917.aspx
@@ -555,8 +566,20 @@ uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar)
 {
 	uiWindow *w = uiNewWindow(title, width, height, hasMenubar);
-	uiWindowSetCentered(w);
+	uiWindowSetCentered(w->hwnd);
 	return w;
+}
+
+void uiWindowShow(void *v)
+{
+	HWND hwnd = static_cast<HWND>(v);
+	ShowWindow(hwnd, SW_SHOW);
+}
+
+void uiWindowHide(void *v)
+{
+	HWND hwnd = static_cast<HWND>(v);
+	ShowWindow(hwnd, SW_HIDE);
 }
 
 // this cannot queue a resize because it's called by the resize handler

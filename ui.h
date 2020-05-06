@@ -126,8 +126,8 @@ _UI_EXTERN void uiUserBugCannotSetParentOnToplevel(const char *type);
 
 typedef struct uiWindow uiWindow;
 #define uiWindow(this) ((uiWindow *) (this))
-_UI_EXTERN char *uiWindowTitle(uiWindow *w);
-_UI_EXTERN void uiWindowSetTitle(uiWindow *w, const char *title);
+_UI_EXTERN char *uiWindowTitle(void *w);
+_UI_EXTERN void uiWindowSetTitle(void *w, const char *title);
 _UI_EXTERN void uiWindowContentSize(uiWindow *w, int *width, int *height);
 _UI_EXTERN void uiWindowSetContentSize(uiWindow *w, int width, int height);
 _UI_EXTERN int uiWindowFullscreen(uiWindow *w);
@@ -137,16 +137,18 @@ _UI_EXTERN void uiWindowOnClosing(uiWindow *w, int (*f)(uiWindow *w, void *data)
 _UI_EXTERN void uiWindowOnResign(uiWindow *w, void (*f)(uiWindow *w));
 _UI_EXTERN int uiWindowBorderless(uiWindow *w);
 _UI_EXTERN void uiWindowSetBorderless(uiWindow *w, int borderless);
-_UI_EXTERN void uiWindowSetChild(uiWindow *w, uiControl *child);
+_UI_EXTERN void uiWindowSetChild(uiWindow *w, void *child);
 _UI_EXTERN int uiWindowMargined(uiWindow *w);
 _UI_EXTERN void uiWindowSetMargined(uiWindow *w, int margined);
-_UI_EXTERN void uiWindowSetCentered(uiWindow *w);
-_UI_EXTERN void uiWindowSetToFront(uiWindow *w);
-_UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
-_UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
-_UI_EXTERN void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b);
+_UI_EXTERN void uiWindowSetCentered(void *w);
+_UI_EXTERN void uiWindowSetToFront(void *w);
+_UI_EXTERN void uiWindowSetAlwaysVisible(void *w);
+_UI_EXTERN void uiWindowResetAlwaysVisible(void *w);
+_UI_EXTERN void uiWindowSetBackgroundColor(void *w, int r, int g, int b);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
+_UI_EXTERN void uiWindowShow(void *v);
+_UI_EXTERN void uiWindowHide(void *v);
 
 typedef struct uiButton uiButton;
 #define uiButton(this) ((uiButton *) (this))
