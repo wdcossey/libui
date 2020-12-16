@@ -79,7 +79,7 @@ _UI_EXTERN void uiTimer(int milliseconds, int (*f)(void *data), void *data);
 
 _UI_EXTERN void uiOnShouldQuit(int (*f)(void *data), void *data);
 
-//_UI_EXTERN void uiFreeText(char *text);
+_UI_EXTERN void uiFreeText(char *text);
 
 typedef struct uiControl uiControl;
 
@@ -145,8 +145,10 @@ _UI_EXTERN void uiWindowSetToFront(uiWindow *w);
 _UI_EXTERN void uiWindowSetAlwaysVisible(uiWindow *w);
 _UI_EXTERN void uiWindowResetAlwaysVisible(uiWindow *w);
 _UI_EXTERN void uiWindowSetBackgroundColor(uiWindow *w, int r, int g, int b);
+_UI_EXTERN uiWindow *uiAttachWindow(void *h);
 _UI_EXTERN uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar);
 _UI_EXTERN uiWindow *uiNewCenteredWindow(const char *title, int width, int height, int hasMenubar);
+
 /*
 typedef struct uiButton uiButton;
 #define uiButton(this) ((uiButton *) (this))

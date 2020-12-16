@@ -47,7 +47,9 @@ static void forceOff(uiMenuItem *item, uiWindow *w, void *data)
 
 static void whatWindow(uiMenuItem *item, uiWindow *w, void *data)
 {
+	printf("menu item clicked on window %p\n", (void *) uiControlHandle((void *) w));
 	printf("menu item clicked on window %p\n", (void *) w);
+
 }
 
 void initMenus(void)

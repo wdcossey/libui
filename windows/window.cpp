@@ -1,7 +1,7 @@
 // 27 april 2015
 #include "uipriv_windows.hpp"
 
-#define windowClass L"libui_uiWindowClass"
+#define windowClass L"sciterCore_uiWindowClass"
 
 struct uiWindow {
 	uiWindowsControl c;
@@ -503,6 +503,31 @@ static void setClientSize(uiWindow *w, int width, int height, BOOL hasMenubar, D
 	}
 	if (SetWindowPos(w->hwnd, NULL, 0, 0, window.right - window.left, window.bottom - window.top, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER) == 0)
 		logLastError(L"error resizing window");
+}
+
+uiWindow *uiAttachWindow(void *h)
+{
+	uiWindow *w;
+	BOOL hasMenubarBOOL;
+
+	uiWindowsNewControl(uiWindow, w);
+
+	hasMenubarBOOL = FALSE;
+	w->hasMenubar = hasMenubarBOOL;
+
+#define style WS_OVERLAPPEDWINDOW
+#define exstyle 0
+
+	w->hwnd = static_cast<HWND>(h);
+	if (w->hwnd == NULL)
+		logLastError(L"error attaching window");
+
+	uiWindowOnClosing(w, defaultOnClosing, NULL);
+	uiWindowOnResign(w, defaultOnHide);
+	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
+
+	windows[w] = true;
+	return w;
 }
 
 uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
