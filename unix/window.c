@@ -250,6 +250,49 @@ void uiWindowResetAlwaysVisible(uiWindow *w)
 	gtk_window_set_keep_above(w->window, FALSE);
 }
 
+uiWindow *uiAttachWindow(void *h)
+{
+	uiWindow *w;
+
+	uiUnixNewControl(uiWindow, w);
+
+	//w->widget = static_cast<GtkWidget>(h);
+	w->widget = (GtkWidget)(h);
+	
+	w->container = GTK_CONTAINER(w->widget);
+	w->window = GTK_WINDOW(w->widget);
+
+	w->vboxWidget = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	w->vboxContainer = GTK_CONTAINER(w->vboxWidget);
+	w->vbox = GTK_BOX(w->vboxWidget);
+
+	// set the vbox as the GtkWindow child
+	gtk_container_add(w->container, w->vboxWidget);
+
+	w->childHolderWidget = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	w->childHolderContainer = GTK_CONTAINER(w->childHolderWidget);
+	gtk_widget_set_hexpand(w->childHolderWidget, TRUE);
+	gtk_widget_set_halign(w->childHolderWidget, GTK_ALIGN_FILL);
+	gtk_widget_set_vexpand(w->childHolderWidget, TRUE);
+	gtk_widget_set_valign(w->childHolderWidget, GTK_ALIGN_FILL);
+	gtk_container_add(w->vboxContainer, w->childHolderWidget);
+
+	// show everything in the vbox, but not the GtkWindow itself
+	gtk_widget_show_all(w->vboxWidget);
+
+	// and connect our events
+	g_signal_connect(w->widget, "delete-event", G_CALLBACK(onClosing), w);
+	g_signal_connect(w->childHolderWidget, "size-allocate", G_CALLBACK(onSizeAllocate), w);
+	uiWindowOnClosing(w, defaultOnClosing, NULL);
+	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
+
+	// normally it's SetParent() that does this, but we can't call SetParent() on a uiWindow
+	// TODO we really need to clean this up, especially since see uiWindowDestroy() above
+	g_object_ref(w->widget);
+
+	return w;
+}
+
 uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 {
 	uiWindow *w;

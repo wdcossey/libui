@@ -411,6 +411,33 @@ static void defaultOnPositionContentSizeChanged(uiWindow *w, void *data)
 	// do nothing
 }
 
+uiWindow *uiAttachWindow(void *h)
+{
+	uiWindow *w;
+
+	uiprivFinalizeMenus();
+
+	uiDarwinNewControl(uiWindow, w);
+
+	//w->window = static_cast<NSWindow>(h);
+	w->window = (NSWindow)(h);
+
+	// do NOT release when closed
+	// we manually do this in uiWindowDestroy() above
+	[w->window setReleasedWhenClosed:NO];
+
+	if (windowDelegate == nil) {
+		windowDelegate = [[windowDelegateClass new] autorelease];
+		[uiprivDelegates addObject:windowDelegate];
+	}
+	[windowDelegate registerWindow:w];
+	uiWindowOnClosing(w, defaultOnClosing, NULL);
+	uiWindowOnResign(w, defaultOnResign);
+	uiWindowOnContentSizeChanged(w, defaultOnPositionContentSizeChanged, NULL);
+
+	return w;
+}
+
 uiWindow *uiNewWindow(const char *title, int width, int height, int hasMenubar)
 {
 	uiWindow *w;
