@@ -335,7 +335,7 @@ jobs:
 - job: darwin_amd64_shared
   displayName: 'Darwin amd64 Shared'
   pool:
-    vmImage: 'macos-10.13'
+    vmImage: 'macOS-10.15'
   workspace:
     clean: all
   steps:
