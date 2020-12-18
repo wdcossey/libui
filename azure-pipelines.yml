@@ -357,7 +357,7 @@ jobs:
 - job: darwin_amd64_static
   displayName: 'Darwin amd64 Static'
   pool:
-    vmImage: 'macos-10.13'
+    vmImage: 'macOS-10.15'
   workspace:
     clean: all
   steps:
