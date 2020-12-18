@@ -9,8 +9,9 @@ trigger:
     - '*'
 
 variables:
-  releaseExamples: 'controlgallery cpp-multithread datetime drawtext histogram tester timer'
-
+  releaseExamples: 'tester'
+#  releaseExamples: 'controlgallery cpp-multithread datetime drawtext histogram tester timer'
+  
 jobs:
 
 # linux {
