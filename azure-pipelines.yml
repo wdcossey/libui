@@ -9,8 +9,9 @@ trigger:
     - '*'
 
 variables:
-  releaseExamples: 'controlgallery cpp-multithread datetime drawtext histogram tester timer'
-
+  releaseExamples: 'tester'
+#  releaseExamples: 'controlgallery cpp-multithread datetime drawtext histogram tester timer'
+  
 jobs:
 
 # linux {
@@ -334,7 +335,7 @@ jobs:
 - job: darwin_amd64_shared
   displayName: 'Darwin amd64 Shared'
   pool:
-    vmImage: 'macos-10.13'
+    vmImage: 'macOS-10.15'
   workspace:
     clean: all
   steps:
@@ -356,7 +357,7 @@ jobs:
 - job: darwin_amd64_static
   displayName: 'Darwin amd64 Static'
   pool:
-    vmImage: 'macos-10.13'
+    vmImage: 'macOS-10.15'
   workspace:
     clean: all
   steps:

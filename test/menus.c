@@ -50,6 +50,12 @@ static void whatWindow(uiMenuItem *item, uiWindow *w, void *data)
 	printf("menu item clicked on window %p\n", (void *) uiControlHandle((void *) w));
 	printf("menu item clicked on window %p\n", (void *) w);
 
+	uiWindow *wnd;
+
+	wnd = uiAttachWindow(uiControlHandle((void *) w));
+	printf("menu item clicked on window %s\n", uiWindowTitle(wnd));
+	uiWindowSetFullscreen(wnd, 1);
+
 }
 
 void initMenus(void)
