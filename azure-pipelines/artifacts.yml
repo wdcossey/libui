@@ -26,7 +26,11 @@ steps:
 #    addChangelog: false
 #    assets: '$(Build.ArtifactStagingDirectory)/*'
 #    assetUploadMode: 'replace'
+- task: CopyFiles@2
+  inputs:
+    contents: 'build/meson-out/**'
+    targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: 'libui-$(Build.SourceBranchName)-${parameters.os}-${parameters.arch}-${parameters.libtype}'
+    artifactName: 'libui-$(Build.SourceBranchName)-${{ parameters.os }}-${{ parameters.arch }}-${{ parameters.libtype }}'
