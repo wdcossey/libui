@@ -17,12 +17,20 @@ steps:
     Remove-Item @("ui.h","${{ parameters.osHeader }}")
     popd
   displayName: 'Create Artifacts'
-- task: GitHubRelease@0
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+#- task: GitHubRelease@0
+#  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+#  inputs:
+#    gitHubConnection: '$(gitHubConnection)'
+#    repositoryName: '$(repositoryName)'
+#    action: 'edit'
+#    addChangelog: false
+#    assets: '$(Build.ArtifactStagingDirectory)/*'
+#    assetUploadMode: 'replace'
+- task: CopyFiles@2
   inputs:
-    gitHubConnection: '$(gitHubConnection)'
-    repositoryName: '$(repositoryName)'
-    action: 'edit'
-    addChangelog: false
-    assets: '$(Build.ArtifactStagingDirectory)/*'
-    assetUploadMode: 'replace'
+    contents: 'build/meson-out/**'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: 'libui-$(Build.SourceBranchName)-${{ parameters.os }}-${{ parameters.arch }}-${{ parameters.libtype }}'
