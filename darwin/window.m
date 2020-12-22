@@ -420,7 +420,7 @@ uiWindow *uiAttachWindow(void *h)
 	uiDarwinNewControl(uiWindow, w);
 
 	//w->window = static_cast<NSWindow>(h);
-	w->window = ((NSWindow *)h);
+	w->window = (NSWindow *)(h);
 
 	// do NOT release when closed
 	// we manually do this in uiWindowDestroy() above
