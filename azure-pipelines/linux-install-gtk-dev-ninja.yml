@@ -2,5 +2,6 @@
 
 steps:
 - script: |
+    sudo apt-get update
     sudo apt-get install libgtk-3-dev ninja-build
   displayName: 'Install GTK+ Dev Files and Ninja'
